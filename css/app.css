@@ -34,6 +34,41 @@ h1 {
 }
 
 /*
+ * Animations for card state transition
+ */
+ @keyframes cardMatchAnim {
+    0% {
+        transform: scale(1);
+    } 
+    50% {
+        transform: scale(1.25);
+    } 
+    100% {
+        transform: scale(1);
+    }
+ }
+
+ @keyframes cardNoMatchAnim {
+    0% {
+        transform: rotate(0deg);
+        transform: scale(1);
+    } 
+    25% {
+        transform: rotate(-7deg);
+    }
+    50% {
+        transform: rotate(15deg);
+        transform: scale(1.25);
+    } 
+    75% {
+        transform: rotate(-15deg);
+    }
+    100% {
+        transform: rotate(0deg);
+        transform: scale(1);
+    }
+ }
+/*
  * Styles for the deck of cards
  */
 
@@ -79,6 +114,15 @@ h1 {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
+    animation-name: cardMatchAnim;
+    animation-duration: 250ms;
+}
+
+.deck .card.nomatch {
+    background: #e94520;
+    font-size: 33px;
+    animation-name: cardNoMatchAnim;
+    animation-duration: 250ms;
 }
 
 /*

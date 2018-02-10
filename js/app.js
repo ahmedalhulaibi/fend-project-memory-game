@@ -101,9 +101,15 @@ let matchCards = function() {
         checkGameOver();
         openCards = [];
     } else {
-        setTimeout(hideOpenCards,250);
+        setTimeout(noMatchCards,250);
     }
 };
+
+let noMatchCards = function () {
+    openCards[0].className = "card show nomatch";
+    openCards[1].className = "card show nomatch";
+    setTimeout(hideOpenCards,251);
+}
 
 let hideOpenCards = function () {
     openCards[0].className = "card";

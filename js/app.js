@@ -2,46 +2,27 @@
 /*
 * Declaring global variables
  */
-let allCards = [];
+const allCards = [];
 let openCards = [];
 let moveCounter = 0;
 let movesCounterSpan = undefined;
-/*
- * Create a list that holds all of your cards
- */
-function createCards() {
-    const imgList = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-leaf", "fa-bicycle", "fa-bomb",];
-    
-    let cards = []
-    imgList.forEach(function (img, index) {
-        let card = document.createElement("li");
-        card.className = "card";
 
-        let cardImg = document.createElement("i");
-        cardImg.className = `fa ${img}`;
-        card.appendChild(cardImg);
-
-        cards.push(card);
-        cards.push(card.cloneNode(true));
-    });
-    return cards;
-
-}
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
+ *   - loop through each card and add to document fragment
+ *   - setup event listener for deck
+ * 
  */
 document.addEventListener("DOMContentLoaded", function () {
     const deck = document.querySelector(".deck");
-    allCards = shuffle(createCards());
+    allCards.push(...shuffle(createCards()));
     const cardsFragment = new DocumentFragment();
-    allCards.forEach(function(card){
+    allCards.forEach(function (card) {
         cardsFragment.appendChild(card);
     });
     deck.appendChild(cardsFragment);
-    deck.addEventListener('click',cardClicked);
+    deck.addEventListener('click', cardClicked);
     movesCounterSpan = document.querySelector(".moves");
     movesCounterSpan.innerHTML = moveCounter;
 });
@@ -60,17 +41,29 @@ function shuffle(array) {
 
     return array;
 }
+/*
+ * Create a list that holds all of your cards
+ */
+function createCards() {
+    const imgList = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-leaf", "fa-bicycle", "fa-bomb",];
+    const cards = [];
+    imgList.forEach(function (img, index) {
+        const card = document.createElement("li");
+        card.className = "card";
 
+        const cardImg = document.createElement("i");
+        cardImg.className = `fa ${img}`;
+        card.appendChild(cardImg);
+
+        cards.push(card);
+        cards.push(card.cloneNode(true));
+    });
+
+    return cards;
+}
 
 /*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
+ * event handler for a card if a card is clicked:
  */
 function cardClicked(event) {
     if (event.target.classList.contains("card") && !event.target.classList.contains("match")) {
@@ -78,49 +71,74 @@ function cardClicked(event) {
     }
 }
 
+/*
+ * display the card's symbol andadd the card to a *list* of "open" cards 
+ * if the *list* of *open* cards has two elements, check to see if the two cards match
+ */
 function showCard(card) {
-    if (openCards.length < 2 ) {
+    if (openCards.length < 2) {
         card.className = "card show open";
+        //prevent a card from matching itself if clicked again
         if (openCards[0] !== card) {
             openCards.push(card);
         }
+        //if there are 2 open card
         if (openCards.length === 2) {
             matchCards();
         }
     }
+    if (openCards.length >= 3) {
+        hideOpenCards();
+    }
 }
 
-let matchCards = function() {
+/*
+ * if the cards do match, lock the cards in the match position
+ * if the cards do not match, call no match function 
+ */
+const matchCards = function () {
     moveCounter++;
     movesCounterSpan.innerHTML = moveCounter;
-    //openCards = document.querySelectorAll(".card .show .open");
-    console.log(openCards);
+    
     if (openCards[0].innerHTML == openCards[1].innerHTML) {
         openCards[0].className = "card show match";
         openCards[1].className = "card show match";
         checkGameOver();
         openCards = [];
     } else {
-        setTimeout(noMatchCards,250);
+        setTimeout(noMatchCards, 250);
     }
 };
 
-let noMatchCards = function () {
+/*
+ * switch cards to nomatch state for animation 
+ */
+const noMatchCards = function () {
     openCards[0].className = "card show nomatch";
     openCards[1].className = "card show nomatch";
-    setTimeout(hideOpenCards,251);
+    const cardStyle = window.getComputedStyle(openCards[0]);
+
+    //use CSS antimaiton time as timeout before next state transition
+    setTimeout(hideOpenCards, parseFloat(cardStyle.getPropertyValue('animation-duration')) * 1000);
 }
 
-let hideOpenCards = function () {
-    openCards[0].className = "card";
-    openCards[1].className = "card";
+/*
+ * remove the cards from the list and hide the card's symbol
+ */
+const hideOpenCards = function () {
+    for (const card of openCards) {
+        card.className = "card";
+    }
     openCards = [];
 };
 
-let checkGameOver = function () {
+/*
+ * if all cards have matched, display a message with the final score
+ */
+const checkGameOver = function () {
     let win = true;
 
-    for (let card of allCards){
+    for (const card of allCards) {
         win = card.classList.contains("match");
         if (!win) {
             break

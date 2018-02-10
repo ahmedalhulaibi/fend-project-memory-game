@@ -2,7 +2,24 @@
  * Create a list that holds all of your cards
  */
 
+function createCards() {
+    const imgList = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-leaf", "fa-bicycle", "fa-bomb",];
+    
+    let cards = []
+    imgList.forEach(function (img, index) {
+        let card = document.createElement("li");
+        card.className = "card";
 
+        let cardImg = document.createElement("i");
+        cardImg.className = `fa ${img}`;
+        card.appendChild(cardImg);
+
+        cards.push(card);
+        cards.push(card.cloneNode(true));
+    });
+    return cards;
+
+}
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below

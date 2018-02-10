@@ -79,6 +79,7 @@ function matchCards() {
     if (openCards[0] == openCards[1]) {
         openCards[0].className = "card show match";
         openCards[1].className = "card show match";
+        checkGameOver();
     } else {
         hideOpenCards();
     }
@@ -88,4 +89,19 @@ function matchCards() {
 function hideOpenCards () {
     openCards[0].className = "card";
     openCards[1].className = "card";
+}
+
+function checkGameOver() {
+    let win = true;
+    allCards.forEach(function(card){
+        win = card.classList.contains("match");
+        if (!win) {
+            return
+        }
+    });
+    if (win) {
+        console.log(`You won in ${moveCounter} moves.`);
+    } else {
+
+    }
 }

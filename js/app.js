@@ -88,7 +88,7 @@ function showCard(card) {
         }
     }
     if (openCards.length >= 3) {
-        hideOpenCards();
+        hideCards();
     }
 }
 
@@ -119,17 +119,19 @@ const noMatchCards = function () {
     const cardStyle = window.getComputedStyle(openCards[0]);
 
     //use CSS antimaiton time as timeout before next state transition
-    setTimeout(hideOpenCards, parseFloat(cardStyle.getPropertyValue('animation-duration')) * 1000);
+    setTimeout(hideCards(openCards,true), parseFloat(cardStyle.getPropertyValue('animation-duration')) * 1000);
 }
 
 /*
  * remove the cards from the list and hide the card's symbol
  */
-const hideOpenCards = function () {
-    for (const card of openCards) {
+const hideCards = function (cards,emptyArrayFlag) {
+    for (const card of cards) {
         card.className = "card";
     }
-    openCards = [];
+    if (emptyArrayFlag){
+        cards = [];
+    }
 };
 
 /*

@@ -68,3 +68,24 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+function showCard(card) {
+    card.className = "card show open";
+    openCards.push(card);
+    if (openCards.length === 2) {matchCards()};
+}
+
+function matchCards() {
+    moveCounter++;
+    if (openCards[0] == openCards[1]) {
+        openCards[0].className = "card show match";
+        openCards[1].className = "card show match";
+    } else {
+        hideOpenCards();
+    }
+    openCards = [];
+}
+
+function hideOpenCards () {
+    openCards[0].className = "card";
+    openCards[1].className = "card";
+}

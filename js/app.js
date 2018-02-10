@@ -26,6 +26,15 @@ function createCards() {
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+document.addEventListener("DOMContentLoaded", function () {
+    const deck = document.querySelector(".deck");
+    let cards = shuffle(createCards());
+    const cardsFragment = new DocumentFragment();
+    cards.forEach(function(card){
+        cardsFragment.appendChild(card);
+    });
+    deck.appendChild(cardsFragment);
+});
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {

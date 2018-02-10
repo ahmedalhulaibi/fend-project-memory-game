@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
         cardsFragment.appendChild(card);
     });
     deck.appendChild(cardsFragment);
+    deck.addEventListener('click',cardClicked);
 });
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -68,13 +69,21 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+function cardClicked(event) {
+    if (event.target.classList.contains("card")) {
+        showCard(event.target);
+    }
+}
+
 function showCard(card) {
     card.className = "card show open";
     openCards.push(card);
-    if (openCards.length === 2) {matchCards()};
+    if (openCards.length === 2) {
+        setTimeout(matchCards,1000);
+    }
 }
 
-function matchCards() {
+let matchCards = function() {
     moveCounter++;
     if (openCards[0] == openCards[1]) {
         openCards[0].className = "card show match";
@@ -84,14 +93,14 @@ function matchCards() {
         hideOpenCards();
     }
     openCards = [];
-}
+};
 
-function hideOpenCards () {
+let hideOpenCards = function () {
     openCards[0].className = "card";
     openCards[1].className = "card";
-}
+};
 
-function checkGameOver() {
+let checkGameOver = function () {
     let win = true;
     allCards.forEach(function(card){
         win = card.classList.contains("match");

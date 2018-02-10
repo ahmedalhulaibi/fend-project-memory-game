@@ -1,7 +1,13 @@
+
+/*
+* Declaring global variables
+ */
+let allCards = [];
+let openCards = [];
+let moveCounter = 0;
 /*
  * Create a list that holds all of your cards
  */
-
 function createCards() {
     const imgList = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-leaf", "fa-bicycle", "fa-bomb",];
     
@@ -28,9 +34,9 @@ function createCards() {
  */
 document.addEventListener("DOMContentLoaded", function () {
     const deck = document.querySelector(".deck");
-    let cards = shuffle(createCards());
+    allCards = shuffle(createCards());
     const cardsFragment = new DocumentFragment();
-    cards.forEach(function(card){
+    allCards.forEach(function(card){
         cardsFragment.appendChild(card);
     });
     deck.appendChild(cardsFragment);

@@ -73,7 +73,7 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 function cardClicked(event) {
-    if (event.target.classList.contains("card")) {
+    if (event.target.classList.contains("card") && !event.target.classList.contains("match")) {
         showCard(event.target);
     }
 }
@@ -119,12 +119,14 @@ let hideOpenCards = function () {
 
 let checkGameOver = function () {
     let win = true;
-    allCards.forEach(function(card){
+
+    for (let card of allCards){
         win = card.classList.contains("match");
         if (!win) {
-            return
+            break
         }
-    });
+    }
+
     if (win) {
         console.log(`You won in ${moveCounter} moves.`);
     } else {

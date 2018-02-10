@@ -5,6 +5,7 @@
 let allCards = [];
 let openCards = [];
 let moveCounter = 0;
+let movesCounterSpan = undefined;
 /*
  * Create a list that holds all of your cards
  */
@@ -41,6 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     deck.appendChild(cardsFragment);
     deck.addEventListener('click',cardClicked);
+    movesCounterSpan = document.querySelector(".moves");
+    movesCounterSpan.innerHTML = moveCounter;
 });
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -76,28 +79,36 @@ function cardClicked(event) {
 }
 
 function showCard(card) {
-    card.className = "card show open";
-    openCards.push(card);
-    if (openCards.length === 2) {
-        setTimeout(matchCards,1000);
+    if (openCards.length < 2 ) {
+        card.className = "card show open";
+        if (openCards[0] !== card) {
+            openCards.push(card);
+        }
+        if (openCards.length === 2) {
+            matchCards();
+        }
     }
 }
 
 let matchCards = function() {
     moveCounter++;
-    if (openCards[0] == openCards[1]) {
+    movesCounterSpan.innerHTML = moveCounter;
+    //openCards = document.querySelectorAll(".card .show .open");
+    console.log(openCards);
+    if (openCards[0].innerHTML == openCards[1].innerHTML) {
         openCards[0].className = "card show match";
         openCards[1].className = "card show match";
         checkGameOver();
+        openCards = [];
     } else {
-        hideOpenCards();
+        setTimeout(hideOpenCards,250);
     }
-    openCards = [];
 };
 
 let hideOpenCards = function () {
     openCards[0].className = "card";
     openCards[1].className = "card";
+    openCards = [];
 };
 
 let checkGameOver = function () {

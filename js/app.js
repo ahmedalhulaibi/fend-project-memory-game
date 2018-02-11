@@ -8,6 +8,10 @@ let movesCounter = 0;
 let movesCounterSpan = undefined;
 let restartDiv = undefined;
 let starsElement = undefined;
+let gameOver = false;
+let seconds = 0;
+let timerFunc = undefined;
+let timerSpan = undefined;
 
 document.addEventListener("DOMContentLoaded", function () {
     restart();
@@ -25,6 +29,10 @@ document.addEventListener("DOMContentLoaded", function () {
  *   - assign DOM elements to respective globals
  */
 function restart() {
+    //set gameOver flag to false
+    gameOver = false;
+
+
     const deck = document.querySelector(".deck");
 
     //set allCards length to zero
@@ -56,6 +64,11 @@ function restart() {
         starsElement = document.querySelector(".stars");
     }
     updateMoves();
+
+    if (timerSpan === undefined) {
+        timerSpan = document.querySelector(".timer");
+    }
+    startTimer();
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -93,6 +106,21 @@ function createCards() {
 
     return cards;
 }
+
+function startTimer() {
+    seconds = 0;
+    timerFunc = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    seconds++;
+    timerSpan.innerHTML = `${seconds}s`;
+}
+
+function stopTimer() {
+    clearInterval(timerFunc);
+}
+
 
 /*
  * event handler for a card if a card is clicked:
@@ -189,18 +217,15 @@ const hideCards = function (cards) {
  * if all cards have matched, display a message with the final score
  */
 const checkGameOver = function () {
-    let win = true;
-
     for (const card of allCards) {
-        win = card.classList.contains("match");
-        if (!win) {
+        gameOver = card.classList.contains("match");
+        if (!gameOver) {
             break
         }
     }
 
-    if (win) {
+    if (gameOver) {
         console.log(`You won in ${movesCounter} moves.`);
-    } else {
-
+        stopTimer();
     }
 }

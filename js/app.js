@@ -156,7 +156,7 @@ function showCard(card) {
  * if the cards do match, lock the cards in the match position
  * if the cards do not match, call no match function 
  */
-const matchCards = function () {
+function matchCards () {
     movesCounter++;
     updateMoves();
     if (openCards[0].innerHTML == openCards[1].innerHTML) {
@@ -167,13 +167,13 @@ const matchCards = function () {
     } else {
         setTimeout(noMatchCards, 250);
     }
-};
+}
 
 /*
  * Updated html moves counter span
  * Update number of stars displayed based on performance
  */
-const updateMoves = function () {
+function updateMoves() {
     movesCounterSpan.innerHTML = movesCounter;
     if (movesCounter <= 12) {
         starsElement.children[0].style.display = 'inline-block';
@@ -193,7 +193,7 @@ const updateMoves = function () {
 /*
  * switch cards to nomatch state for animation 
  */
-const noMatchCards = function () {
+function noMatchCards() {
     openCards[0].className = "card show nomatch";
     openCards[1].className = "card show nomatch";
     const cardStyle = window.getComputedStyle(openCards[0]);
@@ -206,17 +206,17 @@ const noMatchCards = function () {
 /*
  * remove the cards from the list and hide the card's symbol
  */
-const hideCards = function (cards) {
+function hideCards(cards) {
     for (const card of cards) {
         card.className = "card";
     }
     openCards = [];
-};
+}
 
 /*
  * if all cards have matched, display a message with the final score
  */
-const checkGameOver = function () {
+function checkGameOver() {
     for (const card of allCards) {
         gameOver = card.classList.contains("match");
         if (!gameOver) {

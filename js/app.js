@@ -248,6 +248,6 @@ function showWinAlert () {
         starsNum = 1;
     }
     winModalStats.innerHTML = `You earned ${starsNum} stars by completing the game in ${movesCounter} moves and ${seconds} seconds.`;
-    winModal.style.display = 'inherit';
+    winModal.style.display = 'flex';
     divGameContainer.style.display = 'none';
 }

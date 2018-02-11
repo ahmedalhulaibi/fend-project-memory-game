@@ -6,18 +6,22 @@ const allCards = [];
 let openCards = [];
 let movesCounter = 0;
 let movesCounterSpan = undefined;
-let restartDiv = undefined;
 let starsElement = undefined;
 let gameOver = false;
 let seconds = 0;
 let timerFunc = undefined;
 let timerSpan = undefined;
+let divGameContainer = undefined;
+let winModal = undefined;
 
 document.addEventListener("DOMContentLoaded", function () {
+    divGameContainer = document.querySelector(".container");
+    winModal = document.querySelector(".win-modal");
     restart();
 
-    restartDiv = document.querySelector(".restart");
-    restartDiv.addEventListener('click', restart);
+    document.querySelector(".restart").addEventListener('click', restart);
+
+    document.querySelector(".win-modal-play-button").addEventListener('click',restart);
 
 });
 
@@ -31,7 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
 function restart() {
     //set gameOver flag to false
     gameOver = false;
-
+    //hide win-modal
+    winModal.style.display = 'none';
+    divGameContainer.style.display = 'flex';
 
     const deck = document.querySelector(".deck");
 
@@ -227,5 +233,21 @@ function checkGameOver() {
     if (gameOver) {
         console.log(`You won in ${movesCounter} moves.`);
         stopTimer();
+        showWinAlert();
     }
+}
+
+function showWinAlert () {
+    winModalStats = winModal.querySelector(".win-modal-stats");
+    let starsNum;
+    if (movesCounter <= 12) {
+        starsNum = 3;
+    } else if (movesCounter > 12 && movesCounter <= 18) {
+        starsNum = 2;
+    } else {
+        starsNum = 1;
+    }
+    winModalStats.innerHTML = `You earned ${starsNum} stars by completing the game in ${movesCounter} moves and ${seconds} seconds.`;
+    winModal.style.display = 'inherit';
+    divGameContainer.style.display = 'none';
 }

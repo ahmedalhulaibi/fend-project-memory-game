@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>Matching Game</title>
@@ -8,26 +9,42 @@
     <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
     <link rel="stylesheet" href="css/app.css">
 </head>
-<body>
 
+<body>
+    <div class="win-modal">
+        <div class="win-modal-content">
+            <header>
+                <h1>Holy Moly! You Won!</h1>
+            </header>
+            <p class="win-modal-stats">You did 20 moves in 30 seconds</p>
+            <button class="win-modal-play-button">Play again!</button>
+        </div>
+    </div>
     <div class="container">
         <header>
             <h1>Matching Game</h1>
         </header>
 
-        <section class="score-panel">
-        	<ul class="stars">
-        		<li><i class="fa fa-star"></i></li>
-        		<li><i class="fa fa-star"></i></li>
-        		<li><i class="fa fa-star"></i></li>
-        	</ul>
 
-        	<span class="moves">0</span> Moves
+        <section class="score-panel">
+            <ul class="stars">
+                <li>
+                    <i class="fa fa-star"></i>
+                </li>
+                <li>
+                    <i class="fa fa-star"></i>
+                </li>
+                <li>
+                    <i class="fa fa-star"></i>
+                </li>
+            </ul>
+
+            <span class="moves">0</span> Moves
 
             <span class="timer">0s</span>
 
             <div class="restart">
-        		<i class="fa fa-repeat"></i>
+                <i class="fa fa-repeat"></i>
             </div>
         </section>
 
@@ -37,4 +54,5 @@
 
     <script src="js/app.js"></script>
 </body>
+
 </html>

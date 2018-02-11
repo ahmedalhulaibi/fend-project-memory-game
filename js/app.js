@@ -233,7 +233,7 @@ function checkGameOver() {
     if (gameOver) {
         console.log(`You won in ${movesCounter} moves.`);
         stopTimer();
-        setTimeout(showWinAlert,250);
+        setTimeout(showWinAlert,500);
     }
 }
 
@@ -249,5 +249,4 @@ function showWinAlert () {
     }
     winModalStats.innerHTML = `You earned ${starsNum} stars by completing the game in ${movesCounter} moves and ${seconds} seconds.`;
     winModal.style.display = 'flex';
-    divGameContainer.style.display = 'none';
 }

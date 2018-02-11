@@ -4,28 +4,59 @@
  */
 const allCards = [];
 let openCards = [];
-let moveCounter = 0;
+let movesCounter = 0;
 let movesCounterSpan = undefined;
+let restartDiv = undefined;
+let starsElement = undefined;
+
+document.addEventListener("DOMContentLoaded", function () {
+    restart();
+
+    restartDiv = document.querySelector(".restart");
+    restartDiv.addEventListener('click', restart);
+
+});
 
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and add to document fragment
  *   - setup event listener for deck
- * 
+ *   - assign DOM elements to respective globals
  */
-document.addEventListener("DOMContentLoaded", function () {
+function restart() {
     const deck = document.querySelector(".deck");
+
+    //set allCards length to zero
+    allCards.length = 0;
+
+    //push new shuffled cards to allCards
     allCards.push(...shuffle(createCards()));
+
     const cardsFragment = new DocumentFragment();
+
     allCards.forEach(function (card) {
         cardsFragment.appendChild(card);
     });
+
+    //clear existing child card elements from deck
+    while (deck.firstChild) {
+        deck.removeChild(deck.firstChild);
+    }
     deck.appendChild(cardsFragment);
     deck.addEventListener('click', cardClicked);
-    movesCounterSpan = document.querySelector(".moves");
-    movesCounterSpan.innerHTML = moveCounter;
-});
+
+    movesCounter = 0;
+    if (movesCounterSpan === undefined) {
+        movesCounterSpan = document.querySelector(".moves");
+    }
+    movesCounterSpan.innerHTML = movesCounter;
+
+    if (starsElement === undefined) {
+        starsElement = document.querySelector(".stars");
+    }
+    updateMoves();
+}
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -41,6 +72,7 @@ function shuffle(array) {
 
     return array;
 }
+
 /*
  * Create a list that holds all of your cards
  */
@@ -97,9 +129,8 @@ function showCard(card) {
  * if the cards do not match, call no match function 
  */
 const matchCards = function () {
-    moveCounter++;
-    movesCounterSpan.innerHTML = moveCounter;
-    
+    movesCounter++;
+    updateMoves();
     if (openCards[0].innerHTML == openCards[1].innerHTML) {
         openCards[0].className = "card show match";
         openCards[1].className = "card show match";
@@ -111,6 +142,27 @@ const matchCards = function () {
 };
 
 /*
+ * Updated html moves counter span
+ * Update number of stars displayed based on performance
+ */
+const updateMoves = function () {
+    movesCounterSpan.innerHTML = movesCounter;
+    if (movesCounter <= 12) {
+        starsElement.children[0].style.display = 'inline-block';
+        starsElement.children[1].style.display = 'inline-block';
+        starsElement.children[2].style.display = 'inline-block';
+    } else if (movesCounter > 12 && movesCounter <= 18) {
+        starsElement.children[0].style.display = 'inline-block';
+        starsElement.children[1].style.display = 'inline-block';
+        starsElement.children[2].style.display = 'none';
+    } else {
+        starsElement.children[0].style.display = 'inline-block';
+        starsElement.children[1].style.display = 'none';
+        starsElement.children[2].style.display = 'none';
+    }
+}
+
+/*
  * switch cards to nomatch state for animation 
  */
 const noMatchCards = function () {
@@ -119,19 +171,18 @@ const noMatchCards = function () {
     const cardStyle = window.getComputedStyle(openCards[0]);
 
     //use CSS antimaiton time as timeout before next state transition
-    setTimeout(hideCards(openCards,true), parseFloat(cardStyle.getPropertyValue('animation-duration')) * 1000);
+    const animTime = parseFloat(cardStyle.getPropertyValue('animation-duration')) * 1000;
+    setTimeout(() => { hideCards(openCards) }, animTime);
 }
 
 /*
  * remove the cards from the list and hide the card's symbol
  */
-const hideCards = function (cards,emptyArrayFlag) {
+const hideCards = function (cards) {
     for (const card of cards) {
         card.className = "card";
     }
-    if (emptyArrayFlag){
-        cards = [];
-    }
+    openCards = [];
 };
 
 /*
@@ -148,7 +199,7 @@ const checkGameOver = function () {
     }
 
     if (win) {
-        console.log(`You won in ${moveCounter} moves.`);
+        console.log(`You won in ${movesCounter} moves.`);
     } else {
 
     }

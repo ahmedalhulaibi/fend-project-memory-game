@@ -233,7 +233,7 @@ function checkGameOver() {
     if (gameOver) {
         console.log(`You won in ${movesCounter} moves.`);
         stopTimer();
-        showWinAlert();
+        setTimeout(showWinAlert,250);
     }
 }
 

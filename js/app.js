@@ -114,6 +114,7 @@ function createCards() {
 }
 
 function startTimer() {
+    stopTimer();
     seconds = 0;
     timerFunc = setInterval(updateTimer, 1000);
 }

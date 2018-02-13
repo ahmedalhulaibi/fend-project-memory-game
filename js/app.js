@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelector(".restart").addEventListener('click', restart);
 
-    document.querySelector(".win-modal-play-button").addEventListener('click',restart);
+    document.querySelector(".win-modal-play-button").addEventListener('click', restart);
 
 });
 
@@ -163,7 +163,7 @@ function showCard(card) {
  * if the cards do match, lock the cards in the match position
  * if the cards do not match, call no match function 
  */
-function matchCards () {
+function matchCards() {
     movesCounter++;
     updateMoves();
     if (openCards[0].innerHTML == openCards[1].innerHTML) {
@@ -234,11 +234,11 @@ function checkGameOver() {
     if (gameOver) {
         console.log(`You won in ${movesCounter} moves.`);
         stopTimer();
-        setTimeout(showWinAlert,500);
+        setTimeout(showWinAlert, 500);
     }
 }
 
-function showWinAlert () {
+function showWinAlert() {
     winModalStats = winModal.querySelector(".win-modal-stats");
     let starsNum;
     if (movesCounter <= 12) {

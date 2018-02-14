@@ -162,13 +162,12 @@ h1 {
     position: fixed;
     width: 100%;
     height: 125%;
-    background-color: #ffffffc9;
+    background-color: #ffffffec;
     display: none;
 }
 
 .win-modal-content {
     margin: 20% auto;
-    background-color: #ffffffc9;
     text-align: center;
 }
 

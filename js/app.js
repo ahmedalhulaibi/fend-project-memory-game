@@ -13,6 +13,7 @@ let timerFunc = undefined;
 let timerSpan = undefined;
 let divGameContainer = undefined;
 let winModal = undefined;
+let deck = undefined;
 
 document.addEventListener("DOMContentLoaded", function () {
     divGameContainer = document.querySelector(".container");
@@ -39,7 +40,9 @@ function restart() {
     winModal.style.display = 'none';
     divGameContainer.style.display = 'flex';
 
-    const deck = document.querySelector(".deck");
+    if (deck === undefined) {
+        deck = document.querySelector(".deck");
+    }
 
     //set allCards length to zero
     allCards.length = 0;
@@ -59,6 +62,7 @@ function restart() {
     }
     deck.appendChild(cardsFragment);
     deck.addEventListener('click', cardClicked);
+    deck.addEventListener('click', startTimer);
 
     movesCounter = 0;
     if (movesCounterSpan === undefined) {
@@ -74,7 +78,7 @@ function restart() {
     if (timerSpan === undefined) {
         timerSpan = document.querySelector(".timer");
     }
-    startTimer();
+    //startTimer();
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -113,10 +117,13 @@ function createCards() {
     return cards;
 }
 
-function startTimer() {
-    stopTimer();
-    seconds = 0;
-    timerFunc = setInterval(updateTimer, 1000);
+function startTimer(event) {
+    if (event.target.classList.contains("card") && !event.target.classList.contains("match")) {
+        stopTimer();
+        deck.removeEventListener('click', startTimer);
+        seconds = 0;
+        timerFunc = setInterval(updateTimer, 1000);
+    }
 }
 
 function updateTimer() {
